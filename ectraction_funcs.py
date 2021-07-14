@@ -49,7 +49,7 @@ def ectract_outputs(conversion_type, image_path, image_name, output_path, width,
         outputs = [layer.output for layer in model.layers]          
         functors = [K.function([inp], [outputs[i]]) ][0](test)  
         the_wanted_functors = np.array(functors)
-        if i > 8:
+        if i > 7:
             the_wanted_functors = the_wanted_functors.reshape(1, 1, the_wanted_functors.shape[0], the_wanted_functors.shape[1], the_wanted_functors.shape[2])
         #print(the_wanted_functors.shape)
         with open(f"{file_name}", "w") as txt_file:
@@ -185,16 +185,18 @@ def ectract_weights(conversion_type, units, output_path, width, precision, model
                 ab_flag = ab_flag + 1
             elif  model.layers[i].name.find("dense") != -1:
                 fc_count = fc_count + 1
+                '''
                 if(i == 13):
                     weights[1] = np.reshape(weights[1], (1 ,1 , weights[1].shape[0], weights[1].shape[1]))
                     weight_arr = weights[1]
                     bias_arr = weights[0]
                     weight_range = weights[1].shape[3]
                 else:
-                    weights[0] = np.reshape(weights[0], (1 ,1 , weights[0].shape[0], weights[0].shape[1]))
-                    weight_arr = weights[0]
-                    bias_arr = weights[1]
-                    weight_range = weights[0].shape[3]
+                    '''
+                weights[0] = np.reshape(weights[0], (1 ,1 , weights[0].shape[0], weights[0].shape[1]))
+                weight_arr = weights[0]
+                bias_arr = weights[1]
+                weight_range = weights[0].shape[3]
                 file_name_bias = f'{output_path}layer_{layer_counter}_mem.txt'
                 with open(f"{file_name_bias}", "w") as txt_file_bias:
                     for weight in range(weight_range):

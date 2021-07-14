@@ -24,20 +24,11 @@ import tensorflow as tf
 np.set_printoptions(threshold=np.inf)
 
 with tfmot.quantization.keras.quantize_scope():
-    model = keras.models.load_model('..\extraction\lenet_opt.hdf5')
+    model = keras.models.load_model('..\extraction\lenet_rgb.hdf5')
 
 
 #%% 
 
-
-for i in range(len(model.layers)):
-    weights=np.array(model.layers[i].get_weights(),dtype="object")
-    
-    
-weights=np.array(model.layers[1].get_weights(),dtype="object")
-print(model.layers[1].name)
-print(weights[0].shape[3])
-print()
 
     
 #0 decimal 
@@ -66,22 +57,24 @@ for image_name in image_array:
         ef.extract_inputs(conversion_type, Full_path, image_name, Full_path, Full_path, width, precision_fixed)
         
 
-image_name = '4977'
-for conversion_type in range(types):
-    if conversion_type == 0:
-        output_path = '../extraction/output/dec/'
-    if conversion_type == 1:
-        output_path = '../extraction/output/fixed/'
-        width  = width_fixed
-        precision = precision_fixed
-    if conversion_type == 2:
-        output_path = '../extraction/output/float/'
-        width  = width_float
-        precision = precision_float     
-            
-    ef.ectract_outputs(conversion_type, Full_path, image_name, output_path, width, precision, model)
 
-
+image_array = ['5273', 'img_151', '4979', '4977']
+for image_name in image_array:
+    for conversion_type in range(types):
+        if conversion_type == 0:
+            output_path = '../extraction/output/dec/'
+        if conversion_type == 1:
+            output_path = '../extraction/output/fixed/'
+            width  = width_fixed
+            precision = precision_fixed
+        if conversion_type == 2:
+            output_path = '../extraction/output/float/'
+            width  = width_float
+            precision = precision_float     
+                
+        ef.ectract_outputs(conversion_type, Full_path, image_name, output_path, width, precision, model)
+    
+    
 
 units = [1,3,3,1,1]
 for conversion_type in range(types):
